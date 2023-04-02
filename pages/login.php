@@ -1,8 +1,7 @@
 <?php
-    session_start();
     include "connection.php";
 
-    if(isset($_SESSION["isLogged"]) && $_SESSION["isLogged"] === true)
+    if(isset($_COOKIE["isLogged"]) && $_COOKIE["isLogged"] == true)
         header("Location: dashboard.php") and exit;
 ?>
 

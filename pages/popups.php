@@ -1,6 +1,3 @@
-<script src="../js/checkDepartmentForm.js"></script>
-<script src="../js/checkEmployeeForm.js"></script>
-
 <div class="popup" id="dep-popup">
     <section class="popup-body">
         <h3>Add Department</h3>
@@ -78,7 +75,7 @@
                 <label for="department">Department</label><br>
                 <select name="id_dep[]" id="selectDepartment" multiple>
                     <?php
-                        $id_man = $_SESSION['id_man'];
+                        $id_man = $_COOKIE['id_man'];
                         $selectSQL = "SELECT * FROM department WHERE id_man = $id_man";
                         $result = $connect->query($selectSQL);
                         
@@ -96,3 +93,6 @@
         </form>
     </section>
 </div>
+
+<script src="../js/checkDepartmentForm.js"></script>
+<script src="../js/checkEmployeeForm.js"></script>

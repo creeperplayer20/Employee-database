@@ -1,5 +1,4 @@
 <?php
-    session_start();
     include "connection.php";
 
     if(isset($_POST['register'])) {
@@ -31,13 +30,13 @@
         if($result->num_rows > 0) {
             $user = $result->fetch_object();
             if(password_verify($InputPassword, $user->password)) {
-                $_SESSION['id_man'] = $user->id_man;
-                $_SESSION['firstname'] = $user->firstname;
-                $_SESSION['lastname'] = $user->lastname;
-                $_SESSION['email'] = $user->email;
-                $_SESSION['password'] = $user->password;
-                $_SESSION['companyName'] = $user->companyName;
-                $_SESSION['isLogged'] = true;
+                setcookie("isLogged", true, time() + 60 * 60 * 24, "/", "", 0, 1);
+                setcookie('id_man', $user->id_man, time() + 60 * 60 * 24, '/', "", 0, 1);
+                setcookie('firstname', $user->firstname, time() + 60 * 60 * 24, '/', "", 0, 1);
+                setcookie('lastname', $user->lastname, time() + 60 * 60 * 24, '/', "", 0, 1);
+                setcookie('email', $user->email, time() + 60 * 60 * 24, '/', "", 0, 1);
+                setcookie('password', $user->password, time() + 60 * 60 * 24, '/', "", 0, 1);
+                setcookie('companyName', $user->companyName, time() + 60 * 60 * 24, '/', "", 0, 1);
 
                 header('Location: dashboard.php') and die();
             }
@@ -45,8 +44,16 @@
     }
 
     if(isset($_POST['logout'])) {
-        session_destroy();
-        header('Location: login.php') and die();
+        foreach($_COOKIE as $name => $value) {
+            setcookie($name, '', time() - 60 * 60 * 24, '/', "", 0, 1);
+        }
+
+        header('Location: login.php');
+
+        ob_flush();
+        flush();
+
+        die();
     }
 
     if(isset($_POST['addDepartment'])) {
@@ -55,7 +62,7 @@
         $InputCity = $_POST['city'];
         $InputColor = $_POST['color'];
 
-        $ManagerEmail = $_SESSION['email'];
+        $ManagerEmail = $_COOKIE['email'];
 
         $selectSQLManager = "SELECT manager.id_man FROM manager WHERE email = '$ManagerEmail';";
         $result = $connect->query($selectSQLManager);
@@ -75,10 +82,10 @@
     if(isset($_POST['deleteDepartment'])) {
         $DepartmentID = $_POST['id_dep'];
 
-        $deleteEmployeeSQL = "DELETE FROM employee WHERE id_dep = $DepartmentID;";
+        $deleteEmployeeDepartmentSQL = "DELETE FROM employee_department WHERE id_dep = $DepartmentID;";
         $deleteDepartmentSQL = "DELETE FROM department WHERE id_dep = $DepartmentID;";
 
-        if($connect->query($deleteEmployeeSQL) === TRUE && $connect->query($deleteDepartmentSQL) === TRUE)
+        if($connect->query($deleteEmployeeDepartmentSQL) === TRUE && $connect->query($deleteDepartmentSQL) === TRUE)
             header('Location: dashboard.php') and die();
     }
 

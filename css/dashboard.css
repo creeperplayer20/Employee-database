@@ -45,6 +45,13 @@ p {
     text-align: center;
 }
 
+table p {
+    background-color: #ffffff1b;
+    box-shadow: 0 0 18px 8px #ffffff1b;
+    border-radius: 24px;
+    padding: 5px;
+}
+
 input[type="submit"] {
     margin-top: 10px;
     border: none;
@@ -69,8 +76,8 @@ input[type="submit"]:active {
 }
 
 table {
-	border-collapse:collapse;
-	padding:5px;
+	border-collapse: collapse;
+	padding: 5px;
     width: 100%;
     text-align: center;
     border-radius: 18px;
@@ -78,13 +85,13 @@ table {
 }
 
 table th {
-	padding:5px;
+	padding: 5px;
 	background: #f0f0f0;
 	color: #313030;
 }
 
 table td {
-	padding:5px;
+	padding: 5px;
 	background: #ffffff;
 	color: #313030;
     border: #2d142c0f 1px solid;

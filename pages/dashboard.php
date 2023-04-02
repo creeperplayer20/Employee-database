@@ -1,10 +1,7 @@
 <?php
-    session_start();
-
     include "connection.php";
-    include 'popups.php';
 
-    if(!(isset($_SESSION["isLogged"]) && $_SESSION["isLogged"] === true))
+    if(!(isset($_COOKIE["isLogged"]) && $_COOKIE["isLogged"] == true))
         header("Location: login.php") and exit;
 
     require_once('functions.php');
@@ -29,7 +26,7 @@
     <div class="dashboard-wrapper">
         <div class="dashboard-holder">
             <h3>Dashboard</h3>
-            <p>👋 Welcome back, <?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname'] . "!"; ?></p>
+            <p>👋 Welcome back, <?php echo $_COOKIE['firstname'] . " " . $_COOKIE['lastname'] . "!"; ?></p>
             <div class="form-control">
                 <form action="server.php" method="post">
                     <input type="submit" name="logout" value="Logout">
@@ -97,3 +94,7 @@
     </div>             
 </body>
 </html>
+
+<?php
+    include 'popups.php';
+?>

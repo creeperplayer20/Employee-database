@@ -31,15 +31,21 @@ function getDepartments($connect){
 }
 
 function getEmployeesCount($connect){
-    $sql = "SELECT COUNT(id_emp) AS emp_count FROM employee;";
+    $sql = "SELECT COUNT(id_emp) AS emp_count FROM employee_department";
     $result = $connect->query($sql);
     $row = $result->fetch_object();
     return $row->emp_count;
 }
 
 function getEmployees($connect) {
+    $sql = "SELECT * FROM employee_department;";
+    $result = $connect->query($sql);
+
+    if(!$result->num_rows > 0) return;
+
     $sql = "SELECT emp.id_emp, emp.firstname, emp.lastname, dep.departmentName, dep.color FROM employee AS emp LEFT JOIN employee_department AS ed ON emp.id_emp = ed.id_emp LEFT JOIN department AS dep ON ed.id_dep = dep.id_dep ORDER BY emp.id_emp ASC;";
     $result = $connect->query($sql);
+
 
     while($row = $result->fetch_object()){
         echo " 
