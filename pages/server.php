@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include "connection.php";
 
     if(isset($_POST['register'])) {
@@ -13,10 +14,8 @@
             
             $insertSQL = "INSERT INTO manager(firstname, lastname, email, password, companyName) VALUES ('$InputFirstName', '$InputLasttName', '$InputEmail', '$hashedPassword', '$InputCompanyName');";
 
-            if($connect->query($insertSQL) === TRUE) {
-                session_destroy();
+            if($connect->query($insertSQL) === TRUE)
                 header('Location: login.php') and die();
-            } 
         }
     }
 
@@ -48,6 +47,7 @@
             setcookie($name, '', time() - 60 * 60 * 24, '/', "", 0, 1);
         }
 
+        session_destroy();
         header('Location: login.php');
 
         ob_flush();
@@ -56,7 +56,7 @@
         die();
     }
 
-    if(isset($_POST['addDepartment'])) {
+    if(isset($_POST['addDepartmentPopup'])) {
         $InputDepartmentName = $_POST['departmentName'];
         $InputAbbreviation = strtoupper($_POST['abbreviation']);
         $InputCity = $_POST['city'];
@@ -79,6 +79,19 @@
             header('Location: dashboard.php') and die();
     }
 
+    if(isset($_POST['editDepartmentPopup'])) {
+        $DepartmentID = $_SESSION['id_dep'];
+        $InputDepartmentName = $_POST['departmentName'];
+        $InputAbbreviation = strtoupper($_POST['abbreviation']);
+        $InputCity = $_POST['city'];
+        $InputColor = $_POST['color'];
+
+        $updateSQL = "UPDATE department SET departmentName = '$InputDepartmentName', abbreviation = '$InputAbbreviation', city = '$InputCity', color = '$InputColor' WHERE id_dep = $DepartmentID;";
+
+        if($connect->query($updateSQL) === TRUE)
+            header('Location: dashboard.php') and die();
+    }
+
     if(isset($_POST['deleteDepartment'])) {
         $DepartmentID = $_POST['id_dep'];
 
@@ -89,7 +102,7 @@
             header('Location: dashboard.php') and die();
     }
 
-    if (isset($_POST['addEmployee'])) {
+    if (isset($_POST['addEmployeePopup'])) {
         $InputFirstName = $_POST['firstName'];
         $InputLastName = $_POST['lastName'];
         $InputEntryDate = $_POST['entryDate'];
@@ -110,6 +123,27 @@
         }
     }
 
+    if(isset($_POST['editEmployeePopup'])){
+        $InputFirstName = $_POST['firstName'];
+        $InputLastName = $_POST['lastName'];
+        $InputEntryDate = $_POST['entryDate'];
+        $InputDepartmentIDs = implode(",", $_POST['id_dep']);
+        $EmployeeID = $_SESSION['id_emp'];
+
+        $updateSQL = "UPDATE employee SET firstname = '$InputFirstName', lastname = '$InputLastName', entryDate = '$InputEntryDate' WHERE id_emp = $EmployeeID;";
+        $connect->query($updateSQL);
+
+        $deleteSQL = "DELETE FROM employee_department WHERE id_emp = $EmployeeID;";
+        $connect->query($deleteSQL);
+
+        $departmentIDs = explode(",", $InputDepartmentIDs);
+
+        foreach ($departmentIDs as $id_dep) {
+            $insertSQL = "INSERT INTO employee_department (id_emp, id_dep) VALUES ('$EmployeeID', '$id_dep')";
+            $connect->query($insertSQL);
+        }
+    }
+
     if(isset($_POST['deleteEmployee'])) {
         $EmployeeID = $_POST['id_emp'];
 
@@ -118,6 +152,56 @@
 
         if($connect->query($deleteEmployeeDepartmentSQL) === TRUE && $connect->query($deleteEmployeeSQL) === TRUE)
             header('Location: dashboard.php') and die();
+    }
+
+    if (isset($_POST['filterEmployees'])) {
+        $_SESSION['filterBy'] = $_POST['filterBy'];
+        header("Location: dashboard.php");
+    }
+
+    if (isset($_POST['resetFilter'])) {
+        unset($_SESSION['filterBy']);
+        header("Location: dashboard.php");
+    }
+
+
+    if(!isset($_SESSION["id_dep"])) $_SESSION["id_dep"] = $_GET["id_dep"];
+    if(!isset($_SESSION["id_emp"])) $_SESSION["id_emp"] = $_GET["id_emp"];
+
+    if(isset($_POST['getIDDepartment'])){
+        $_SESSION['id_dep'] = $_POST['id_dep'];
+        header("Location: dashboard.php?id_dep=" . $_POST['id_dep']);
+        exit();
+    }
+
+    if(isset($_POST['getIDEmployee'])){
+        $_SESSION['id_emp'] = $_POST['id_emp'];
+        header("Location: dashboard.php?id_emp=" . $_POST['id_emp']);
+        exit();
+    }
+
+    if(isset($_POST['showDepInfo'])) {
+        $_SESSION['id_dep'] = $_POST['id_dep'];
+        header("Location: dashboard.php?id_dep=" . $_POST['id_dep'] . "&depInfo=true");
+        exit();
+    }
+
+    if(isset($_POST['showEmpInfo'])) {
+        $_SESSION['id_emp'] = $_POST['id_emp'];
+        header("Location: dashboard.php?id_emp=" . $_POST['id_emp'] . "&empInfo=true");
+        exit();
+    }
+
+    if(isset($_POST['hideDepInfo'])) {
+        $_SESSION['id_dep'] = $_POST['id_dep'];
+        header("Location: dashboard.php");
+        exit();
+    }
+
+    if(isset($_POST['hideEmpInfo'])) {
+        $_SESSION['id_emp'] = $_POST['id_emp'];
+        header("Location: dashboard.php");
+        exit();
     }
 
     header("Location: register.php") and die();

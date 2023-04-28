@@ -52,7 +52,7 @@ table p {
     padding: 5px;
 }
 
-input[type="submit"] {
+input[type="submit"], input[type="button"] {
     margin-top: 10px;
     border: none;
     color: white;
@@ -65,12 +65,14 @@ input[type="submit"] {
     border-radius: 5px;
 }
 
-input[type="submit"]:hover {
+input[type="submit"],
+input[type="button"]:hover {
     background-color: #2D142C;
     box-shadow: 0 0 5px #47213a;
 }
 
-input[type="submit"]:active {
+input[type="submit"],
+input[type="button"]:active {
     background-color: #2D142C;
     box-shadow: 0 0 14px #6d376b;
 }
@@ -183,7 +185,7 @@ table td {
     background-color: white;
     border-radius: 5px;
     padding: 10px;
-    width: 250px;
+    width: 256px;
 
     background-color: white;
     box-shadow: 0 0 6px white;
@@ -218,6 +220,10 @@ table td {
     margin-top: 5px;
 }
 
+input[type="text"]:hover {
+    background-color: #e0e0e0;
+}
+
 input[type="submit"] {
     margin-top: 10px;
     border: none;
@@ -239,6 +245,66 @@ input[type="submit"]:hover {
 input[type="submit"]:active {
     background-color: #2D142C;
     box-shadow: 0 0 14px #6d376b;
+}
+
+input[type="date"] {
+    width: 96%;
+    padding: 5px;
+    background-color: #efefef;
+    box-shadow: 2px 2px 4px 0px #dbdbdb;
+    border: none;
+    border-radius: 5px;
+    height: 20px;
+    margin-top: 5px;
+}
+
+input[type="date"]:hover {
+    background-color: #e0e0e0;
+}
+
+select {
+    width: 100%;
+    padding: 5px;
+    background-color: #efefef;
+    box-shadow: 2px 2px 4px 0px #dbdbdb;
+    border: none;
+    border-radius: 5px;
+    height: 100%;
+    margin-top: 5px;
+    overflow-y: auto;
+    overflow-x: auto;
+
+}
+
+select:hover {
+    background-color: #e0e0e0;
+}
+
+select option {
+    padding: 2px;
+}
+
+input[type="color"] {
+    width: 100%;
+    padding: 5px;
+    background-color: #efefef;
+    box-shadow: 2px 2px 4px 0px #dbdbdb;
+    border: none;
+    border-radius: 5px;
+    height: 36px;
+    margin-top: 5px;
+}
+
+input[type="color"]:hover {
+    background-color: #e0e0e0;
+}
+
+input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    padding: 5px;
 }
 
 .error.form-control input[type="text"] {

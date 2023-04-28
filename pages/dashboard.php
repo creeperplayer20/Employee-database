@@ -1,4 +1,8 @@
 <?php
+session_start();
+?>
+
+<?php
     include "connection.php";
 
     if(!(isset($_COOKIE["isLogged"]) && $_COOKIE["isLogged"] == true))
@@ -38,15 +42,16 @@
             <h3>Departments</h3>
             <p>👨‍💼 Here you can add, edit, delete and view your departments.</p>
             <div class="form-control">
-                <input type="submit" name="addDepartment" value="Add Department" onclick="showPopup('dep-popup')"><br>
+                <input type="submit" name="addDepartment" value="Add Department" onclick="showPopup('add-dep-popup')"><br>
             </div>
             <div class="table-wrapper">
                 <?php
-                    if(!getDepartmentsCount($connect) == 0) {
+                    if(!getDepartmentsCount($connect) <= 0) {
                         echo "<table>";
 
                         echo "                        
                         <tr>
+                            <th>Department ID</th>
                             <th>Department name</th>
                             <th>Abbreviation</th>
                             <th>City</th>
@@ -67,11 +72,12 @@
             <h3>Employees</h3>
             <p>👷 Here you can add, edit, delete and view your employees.</p>
             <div class="form-control">
-                <input type="submit" name="addDepartment" value="Add Department" onclick="showPopup('emp-popup')"><br>
+                <input type="submit" name="addEmployee" value="Add Employee" onclick="showPopup('add-emp-popup')"><br>
+                <input type="submit" name="filter" value="Filter" onclick="showPopup('filter-emp-popup')"><br>
             </div>
             <div class="table-wrapper">
                 <?php
-                    if(!getEmployeesCount($connect) == 0) {
+                    if(!getEmployeesCount($connect) <= 0) {
                         echo "<table>";
 
                         echo "                        
@@ -79,8 +85,8 @@
                             <th>Employee ID</th>
                             <th>First name</th>
                             <th>Last name</th>
-                            <th>Color</th>
                             <th>Department</th>
+                            <th>Color</th>
                             <th>Actions</th>
                         </tr>";
 
@@ -97,4 +103,17 @@
 
 <?php
     include 'popups.php';
+?>
+
+<?php
+    if (isset($_GET['empInfo']) && $_GET['empInfo'] == 'true' && isset($_GET['id_emp'])) {
+        echo "<script>showPopup('info-emp-popup');</script>";
+        return;
+    } else if(isset($_GET['id_dep']))
+        if(isset($_GET['depInfo']) && $_GET['depInfo'] == 'true')
+            echo "<script>showPopup('info-dep-popup');</script>";
+        else 
+            echo "<script>showPopup('edit-dep-popup');</script>";
+        else if(isset($_GET['id_emp'])) 
+            echo "<script>showPopup('edit-emp-popup');</script>";
 ?>
