@@ -52,7 +52,7 @@ table p {
     padding: 5px;
 }
 
-input[type="submit"], input[type="button"] {
+input[type="submit"] {
     margin-top: 10px;
     border: none;
     color: white;
@@ -65,14 +65,12 @@ input[type="submit"], input[type="button"] {
     border-radius: 5px;
 }
 
-input[type="submit"],
-input[type="button"]:hover {
+input[type="submit"]:hover {
     background-color: #2D142C;
     box-shadow: 0 0 5px #47213a;
 }
 
-input[type="submit"],
-input[type="button"]:active {
+input[type="submit"]:active {
     background-color: #2D142C;
     box-shadow: 0 0 14px #6d376b;
 }
